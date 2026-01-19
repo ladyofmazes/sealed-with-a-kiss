@@ -16,7 +16,7 @@ type figure1 struct {
 
 func (h *figure1) OnMount(ctx app.Context) {
 	h.figurepage = lbook.NewFigurePage()
-	h.figurepage.Page("sealed-with-a-kiss-grass")
+	h.figurepage.Page("sealed-with-a-kiss-drinks")
 
 	h.figurepage.Icaptions = []string{"Click Below to Begin",
 		"It is a beautiful day",
@@ -36,6 +36,10 @@ func (h *figure1) OnMount(ctx app.Context) {
 			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
 
 			h.figurepage.IpageVisits[val] = visits
+			if visits > 0 {
+				h.figurepage.Icaptions = append(h.figurepage.Icaptions, "You feel a little sick like you drank alcohol which of course you are allergic to and a cleric brought you back to life")
+				h.figurepage.Ilinks = append(h.figurepage.Ilinks, "")
+			}
 		})
 	}
 }
@@ -52,6 +56,7 @@ func (h *figure1) Render() app.UI {
 	}
 	return h.figurepage.
 		Name("sealed-with-a-kiss-grass").
+		Page("sealed-with-a-kiss-drinks").
 		Figure(
 			"/web/20251224_144535.png",
 		).Caption(h.figurepage.Icaptions...).Audio("/web/BriskWalk.wav").Links(h.figurepage.Ilinks...)
