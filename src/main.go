@@ -110,6 +110,36 @@ type figure3 struct {
 	figurepage *lbook.FigurePage
 }
 
+func (h *figure3) OnMount(ctx app.Context) {
+	h.figurepage = lbook.NewFigurePage()
+	h.figurepage.Page("sealed-with-a-kiss-bakery")
+
+	h.figurepage.Icaptions = []string{"Click Below to Begin",
+		"You enter the bakery",
+		"Obviously you have to buy a dozen of your favorite cookies",
+		"Suddenly a dog appears",
+		"\"I am an enchanted dog\", she says, \"And I need a kiss and a dozen cookies to return to my human form\"",
+		"\"Is that really true?\"",
+		"She doesn't say anything, just sitting there looking cute.",
+		"Give her a cookie",
+		"Tell her to go away"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "/sealed-with-a-kiss-door", "/sealed-with-a-kiss-room"}
+	// Load the stored value
+	for i, val := range h.figurepage.Ipage {
+		ctx.Dispatch(func(ctx app.Context) {
+			var value int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i], &value)
+
+			h.figurepage.IpageScore[val] = value
+
+			var visits int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
+
+			h.figurepage.IpageVisits[val] = visits
+		})
+	}
+}
+
 func (h *figure3) Render() app.UI {
 	if h.figurepage == nil {
 		h.figurepage = lbook.NewFigurePage()
@@ -124,12 +154,36 @@ func (h *figure3) Render() app.UI {
 		Name("sealed-with-a-kiss-bakery").
 		Figure(
 			"/web/20251208_121710.png",
-		).Audio("/web/ASongForRoss.wav")
+		).Caption(h.figurepage.Icaptions...).Audio("/web/ASongForRoss.wav").Links(h.figurepage.Ilinks...)
 }
 
 type figure4 struct {
 	app.Compo
 	figurepage *lbook.FigurePage
+}
+
+func (h *figure4) OnMount(ctx app.Context) {
+	h.figurepage = lbook.NewFigurePage()
+	h.figurepage.Page("sealed-with-a-kiss-room")
+
+	h.figurepage.Icaptions = []string{"Click Below to Begin",
+		"This is your house. Somehow you ended up back here again. Alone.",
+		"Leave"}
+	h.figurepage.Ilinks = []string{"", "", "/"}
+	// Load the stored value
+	for i, val := range h.figurepage.Ipage {
+		ctx.Dispatch(func(ctx app.Context) {
+			var value int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i], &value)
+
+			h.figurepage.IpageScore[val] = value
+
+			var visits int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
+
+			h.figurepage.IpageVisits[val] = visits
+		})
+	}
 }
 
 func (h *figure4) Render() app.UI {
@@ -146,12 +200,43 @@ func (h *figure4) Render() app.UI {
 		Name("sealed-with-a-kiss-room").
 		Figure(
 			"/web/20251201_174639.png",
-		).Audio("/web/QuietChat.wav")
+		).Caption(h.figurepage.Icaptions...).Audio("/web/QuietChat.wav").Links(h.figurepage.Ilinks...)
 }
 
 type figure5 struct {
 	app.Compo
 	figurepage *lbook.FigurePage
+}
+
+func (h *figure5) OnMount(ctx app.Context) {
+	h.figurepage = lbook.NewFigurePage()
+	h.figurepage.Page("sealed-with-a-kiss-door")
+
+	h.figurepage.Icaptions = []string{"Click Below to Begin",
+		"You gave the dog a cookie and before you knew it she was inviting you back to her apartment",
+		"The building is very impressive. She must have a lot of money",
+		"\"The code is 123456\", She tells you at the door.",
+		"\"That's the same code as my luggage.\" You say, successfully entering the code and opening the door.",
+		"Her apartment is as nice as the building. The floor is a beautiful blond hard wood and it is lushly furnished.",
+		"\"I like what you've done with the place.\" You say.",
+		"\"Just kiss me!\" She says. ",
+		"Kiss the dog",
+		"Refuse to kiss the dog"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "", "/", "/sealed-with-a-kiss-room"}
+	// Load the stored value
+	for i, val := range h.figurepage.Ipage {
+		ctx.Dispatch(func(ctx app.Context) {
+			var value int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i], &value)
+
+			h.figurepage.IpageScore[val] = value
+
+			var visits int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
+
+			h.figurepage.IpageVisits[val] = visits
+		})
+	}
 }
 
 func (h *figure5) Render() app.UI {
@@ -168,12 +253,42 @@ func (h *figure5) Render() app.UI {
 		Name("sealed-with-a-kiss-door").
 		Figure(
 			"/web/20251230_171946.png",
-		).Audio("/web/Trepidation.wav")
+		).Caption(h.figurepage.Icaptions...).Audio("/web/Trepidation.wav").Links(h.figurepage.Ilinks...)
 }
 
 type figure6 struct {
 	app.Compo
 	figurepage *lbook.FigurePage
+}
+
+func (h *figure6) OnMount(ctx app.Context) {
+	h.figurepage = lbook.NewFigurePage()
+	h.figurepage.Page("sealed-with-a-kiss-door")
+
+	h.figurepage.Icaptions = []string{"Click Below to Begin",
+		"You kiss the dog, just like you have so many times before",
+		"Despite the wetness and the smell you have grown used to the experience",
+		"However this time something else happens",
+		"Suddenly the dog shifts and grows and becomes a beautiful woman",
+		"\"I told you I was a human. And I am also a princess and this apartment is an enchanted castle.\"",
+		"As she is speaking the apartment is also shifting, turning from traditional hardwood to cold stone",
+		"Embrace and marry the princess",
+		"Refuse to marry the princess"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "/", "/"}
+	// Load the stored value
+	for i, val := range h.figurepage.Ipage {
+		ctx.Dispatch(func(ctx app.Context) {
+			var value int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i], &value)
+
+			h.figurepage.IpageScore[val] = value
+
+			var visits int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
+
+			h.figurepage.IpageVisits[val] = visits
+		})
+	}
 }
 
 func (h *figure6) Render() app.UI {
