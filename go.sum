@@ -10,6 +10,10 @@ github.com/ladyofmazes/linkbook v0.2.1 h1:nwwVC10evm70JzLIgFQDqEqGWNRJroV9bjMgQz
 github.com/ladyofmazes/linkbook v0.2.1/go.mod h1:f1orlT0n4xG9SIpiyek6aXAr3lzPjrXBlJlQizZXOcg=
 github.com/ladyofmazes/linkbook v0.2.2 h1:NtYLqex+vMhdd2iEdvc7xhchTfmtNUH+Mpgkom1r2qo=
 github.com/ladyofmazes/linkbook v0.2.2/go.mod h1:f1orlT0n4xG9SIpiyek6aXAr3lzPjrXBlJlQizZXOcg=
+github.com/ladyofmazes/linkbook v0.2.3 h1:09EGPHsgACWFtTZOmIhW5fCQTCY9maWgT85stkoI6po=
+github.com/ladyofmazes/linkbook v0.2.3/go.mod h1:f1orlT0n4xG9SIpiyek6aXAr3lzPjrXBlJlQizZXOcg=
+github.com/ladyofmazes/linkbook v0.2.4 h1:bJ7uWVMT9UcuXlnirX0xMbyGr9klRiMGgTvl6T1JIB0=
+github.com/ladyofmazes/linkbook v0.2.4/go.mod h1:f1orlT0n4xG9SIpiyek6aXAr3lzPjrXBlJlQizZXOcg=
 github.com/maxence-charriere/app v1.3.6 h1:6q9vCUxWI6qf3m0fHpbYYtlgxbs+Fob72rmPnG4Rusc=
 github.com/maxence-charriere/app v1.3.6/go.mod h1:UR8OusHGaVp2LX+vooHsFX4dOI3pwCfVVCmaFGtUrdA=
 github.com/maxence-charriere/go-app/v10 v10.1.8 h1:n1dNvMATqjGIqmBcHNxPx6ZU/P9zKOrTn02m/ebbtV4=
