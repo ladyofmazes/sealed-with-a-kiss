@@ -9,58 +9,115 @@ import (
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
-type figure struct {
+type figure1 struct {
 	app.Compo
 	figurepage *lbook.FigurePage
 }
 
-func (h *figure) Render() app.UI {
-	var curPage = lbook.NewFigurePage()
-	return curPage.
-		Name("cookies").
-		Figure(
-			"/web/20251208_121710.png",
-		).Caption(
-		"Click Below to Begin", "Caption", "Caption2").Audio("/web/ASongForRoss.wav").Links("", "", "https://blog-2qu.pages.dev")
-}
+func (h *figure1) OnMount(ctx app.Context) {
+	h.figurepage = lbook.NewFigurePage()
+	h.figurepage.Page("sealed-with-a-kiss-grass")
 
-// The main function is the entry point where the app is configured and started.
-// It is executed in 2 different environments: A client (the web browser) and a
-// server.
-func main() {
-	// The first thing to do is to associate the components with a path.
-	//
-	// This is done by calling the Route() function,  which tells go-app what
-	// component to display for a given path, on both client and server-side.
-	app.Route("/", func() app.Composer { return &figure{} })
+	h.figurepage.Icaptions = []string{"Click Below to Begin",
+		"It is a beautiful day",
+		"To your left is your local pub",
+		"To your right is a bakery",
+		"Or you could go home"}
+	h.figurepage.Ilinks = []string{"", "", "/sealed-with-a-kiss-drinks", "/sealed-with-a-kiss-bakery", "/sealed-with-a-kiss-room"}
+	// Load the stored value
+	for i, val := range h.figurepage.Ipage {
+		ctx.Dispatch(func(ctx app.Context) {
+			var value int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i], &value)
 
-	// Once the routes set up, the next thing to do is to either launch the app
-	// or the server that serves the app.
-	//
-	// When executed on the client-side, the RunWhenOnBrowser() function
-	// launches the app,  starting a loop that listens for app events and
-	// executes client instructions. Since it is a blocking call, the code below
-	// it will never be executed.
-	//
-	// When executed on the server-side, RunWhenOnBrowser() does nothing, which
-	// lets room for server implementation without the need for precompiling
-	// instructions.
-	app.RunWhenOnBrowser()
+			h.figurepage.IpageScore[val] = value
 
-	// Add this check - if we're in browser, block forever
-	if app.IsClient {
-		select {} // Block forever - prevent Go runtime from exiting
+			var visits int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
+
+			h.figurepage.IpageVisits[val] = visits
+		})
 	}
 
-	// Finally, launching the server that serves the app is done by using the Go
-	// standard HTTP package.
-	//
-	// The Handler is an HTTP handler that serves the client and all its
-	// required resources to make it work into a web browser. Here it is
-	// configured to handle requests with a path that starts with "/".
+}
+
+func (h *figure1) Render() app.UI {
+	if h.figurepage == nil {
+		h.figurepage = lbook.NewFigurePage()
+	}
+	if len(h.figurepage.Icaptions) == 0 {
+		h.figurepage.Icaptions = []string{""}
+	}
+	if len(h.figurepage.Ilinks) == 0 {
+		h.figurepage.Ilinks = []string{""}
+	}
+	return h.figurepage.
+		Name("sealed-with-a-kiss-grass").
+		Figure(
+			"/web/20251224_144535.png",
+		).Caption(h.figurepage.Icaptions...).Audio("/web/BriskWalk.wav").Links(h.figurepage.Ilinks...)
+}
+
+type figure2 struct {
+	app.Compo
+	figurepage *lbook.FigurePage
+}
+
+func (h *figure2) Render() app.UI {
+	var curPage = lbook.NewFigurePage()
+
+	return curPage.
+		Name("sealed-with-a-kiss-drinks").
+		Figure(
+			"/web/20251129_173150.png",
+		).Audio("/web/Forsaken.wav")
+}
+
+type figure3 struct {
+	app.Compo
+	figurepage *lbook.FigurePage
+}
+
+func (h *figure3) Render() app.UI {
+	var curPage = lbook.NewFigurePage()
+
+	return curPage.
+		Name("sealed-with-a-kiss-bakery").
+		Figure(
+			"/web/20251208_121710.png",
+		).Audio("/web/ASongForRoss.wav")
+}
+
+type figure4 struct {
+	app.Compo
+	figurepage *lbook.FigurePage
+}
+
+func (h *figure4) Render() app.UI {
+	var curPage = lbook.NewFigurePage()
+
+	return curPage.
+		Name("sealed-with-a-kiss-room").
+		Figure(
+			"/web/20251201_174639.png",
+		).Audio("/web/QuietChat.wav")
+}
+
+func main() {
+	app.Route("/", func() app.Composer { return &figure1{} })
+	app.Route("/sealed-with-a-kiss-drinks", func() app.Composer { return &figure2{} })
+	app.Route("/sealed-with-a-kiss-bakery", func() app.Composer { return &figure3{} })
+	app.Route("/sealed-with-a-kiss-room", func() app.Composer { return &figure4{} })
+
+	app.RunWhenOnBrowser()
+
+	if app.IsClient {
+		select {}
+	}
+
 	http.Handle("/", &app.Handler{
-		Name:        "Home",
-		Description: "Home Page",
+		Name:        "That Time I Gave a Dog a Cookie and Then I Did It 14 More Times and Was Transported to Another World",
+		Description: "That time I gave a dog a cookie and then I did it 14 more times and was transported to another world",
 		Resources:   app.LocalDir("."),
 		Styles: []string{
 			"/app.css",
