@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"log"
 	"net/http"
+	"strings"
 
 	lbook "github.com/ladyofmazes/linkbook/lib"
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
@@ -36,9 +37,12 @@ func (h *figure1) OnMount(ctx app.Context) {
 			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
 
 			h.figurepage.IpageVisits[val] = visits
-			if visits > 0 {
-				h.figurepage.Icaptions = append(h.figurepage.Icaptions, "You feel a little sick like you drank alcohol which of course you are allergic to and a cleric brought you back to life")
-				h.figurepage.Ilinks = append(h.figurepage.Ilinks, "")
+
+			if visits > 0 && strings.TrimSpace(val) == "sealed-with-a-kiss-drinks" {
+				var newText []string = []string{"Click Below to Begin", "You feel a little sick like you drank alcohol which of course you are allergic to and a cleric brought you back to life"}
+				var newLinks []string = []string{"", ""}
+				h.figurepage.Icaptions = append(newText, h.figurepage.Icaptions[1:]...)
+				h.figurepage.Ilinks = append(newLinks, h.figurepage.Ilinks[1:]...)
 			}
 		})
 	}
