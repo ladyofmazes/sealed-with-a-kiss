@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "embed"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -73,7 +74,13 @@ type figure2 struct {
 
 func (h *figure2) OnMount(ctx app.Context) {
 	h.figurepage = lbook.NewFigurePage()
-	h.figurepage.Page("sealed-with-a-kiss-drinks")
+	var figurePages []string = []string{"sealed-with-a-kiss-grass",
+		"sealed-with-a-kiss-room",
+		"sealed-with-a-kiss-door",
+		"sealed-with-a-kiss-kiss",
+		"sealed-with-a-kiss-drinks",
+		"sealed-with-a-kiss-bakery"}
+	h.figurepage.Page(figurePages...)
 
 	h.figurepage.Icaptions = []string{"Click Below to Begin",
 		"You go to the local pub",
@@ -81,20 +88,34 @@ func (h *figure2) OnMount(ctx app.Context) {
 		"Somehow you forgot you are allergic to alcohol",
 		"You died (but luckily were resurrected by a cleric because this is a magical world)"}
 	h.figurepage.Ilinks = []string{"", "", "", "", "/"}
-	// Load the stored value
-	for i, val := range h.figurepage.Ipage {
+
+	var kissVisits int
+	ctx.SessionStorage().Get("sealed-with-a-kiss-drinks"+"Visits", &kissVisits)
+	if kissVisits > 11 {
+		h.figurepage.Icaptions = []string{"Click Below to Begin", "You died forever. The cleric at this bar has a 12 resurrection maximum", "Start Over"}
+		h.figurepage.Ilinks = []string{"", "", "/"}
+		fmt.Println("Dead")
+		for _, val := range figurePages {
+			ctx.Dispatch(func(ctx app.Context) {
+				ctx.SessionStorage().Set(val, 0)
+				ctx.SessionStorage().Set(val+"Visits", 0)
+			})
+		}
+	}
+	for _, val := range figurePages {
 		ctx.Dispatch(func(ctx app.Context) {
 			var value int
-			ctx.SessionStorage().Get(h.figurepage.Ipage[i], &value)
+			ctx.SessionStorage().Get(val, &value)
 
-			h.figurepage.IpageScore[val] = value
+			h.figurepage.IpageScore[strings.TrimSpace(val)] = value
 
 			var visits int
-			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
+			ctx.SessionStorage().Get(val+"Visits", &visits)
 
-			h.figurepage.IpageVisits[val] = visits
+			h.figurepage.IpageVisits[strings.TrimSpace(val)] = visits
 		})
 	}
+
 }
 
 func (h *figure2) Render() app.UI {
@@ -107,6 +128,7 @@ func (h *figure2) Render() app.UI {
 	if len(h.figurepage.Ilinks) == 0 {
 		h.figurepage.Ilinks = []string{""}
 	}
+
 	return h.figurepage.
 		Name("sealed-with-a-kiss-drinks").
 		Figure(
