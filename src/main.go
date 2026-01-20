@@ -34,7 +34,9 @@ func (h *figure1) OnMount(ctx app.Context) {
 
 	var kissVisits int
 	ctx.SessionStorage().Get("sealed-with-a-kiss-kiss"+"Visits", &kissVisits)
-	if kissVisits > 11 {
+	var doorVisits int
+	ctx.SessionStorage().Get("sealed-with-a-kiss-door"+"Visits", &doorVisits)
+	if kissVisits > 0 && doorVisits > 11 {
 
 		for _, val := range figurePages {
 			ctx.Dispatch(func(ctx app.Context) {
