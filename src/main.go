@@ -2,7 +2,6 @@ package main
 
 import (
 	_ "embed"
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -94,7 +93,7 @@ func (h *figure2) OnMount(ctx app.Context) {
 	if kissVisits > 11 {
 		h.figurepage.Icaptions = []string{"Click Below to Begin", "You died forever. The cleric at this bar has a 12 resurrection maximum", "Start Over"}
 		h.figurepage.Ilinks = []string{"", "", "/"}
-		fmt.Println("Dead")
+
 		for _, val := range figurePages {
 			ctx.Dispatch(func(ctx app.Context) {
 				ctx.SessionStorage().Set(val, 0)
@@ -155,7 +154,7 @@ func (h *figure3) OnMount(ctx app.Context) {
 		"Give her a cookie",
 		"Tell her to go away"}
 	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "/sealed-with-a-kiss-door", "/sealed-with-a-kiss-room"}
-	// Load the stored value
+
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
 			var value int
@@ -241,7 +240,13 @@ type figure5 struct {
 
 func (h *figure5) OnMount(ctx app.Context) {
 	h.figurepage = lbook.NewFigurePage()
-	h.figurepage.Page("sealed-with-a-kiss-door")
+	var figurePages []string = []string{"sealed-with-a-kiss-grass",
+		"sealed-with-a-kiss-room",
+		"sealed-with-a-kiss-door",
+		"sealed-with-a-kiss-kiss",
+		"sealed-with-a-kiss-drinks",
+		"sealed-with-a-kiss-bakery"}
+	h.figurepage.Page(figurePages...)
 
 	h.figurepage.Icaptions = []string{"Click Below to Begin",
 		"You gave the dog a cookie and before you knew it she was inviting you back to her apartment",
@@ -254,7 +259,12 @@ func (h *figure5) OnMount(ctx app.Context) {
 		"Kiss the dog",
 		"Refuse to kiss the dog"}
 	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "", "/", "/sealed-with-a-kiss-room"}
-	// Load the stored value
+
+	var kissVisits int
+	ctx.SessionStorage().Get("sealed-with-a-kiss-door"+"Visits", &kissVisits)
+	if kissVisits > 11 {
+		h.figurepage.Ilinks[8] = "/sealed-with-a-kiss-kiss"
+	}
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
 			var value int
@@ -336,7 +346,7 @@ func (h *figure6) Render() app.UI {
 		Name("sealed-with-a-kiss-kiss").
 		Figure(
 			"/web/20260104_155132.png",
-		).Audio("/web/CheerfulSunshine.wav")
+		).Caption(h.figurepage.Icaptions...).Audio("/web/CheerfulSunshine.wav").Links(h.figurepage.Ilinks...)
 }
 
 func main() {
