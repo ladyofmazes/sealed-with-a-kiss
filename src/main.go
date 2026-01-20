@@ -91,7 +91,7 @@ func (h *figure2) OnMount(ctx app.Context) {
 	var kissVisits int
 	ctx.SessionStorage().Get("sealed-with-a-kiss-drinks"+"Visits", &kissVisits)
 	if kissVisits > 11 {
-		h.figurepage.Icaptions = []string{"Click Below to Begin", "You died forever. The cleric at this bar has a 12 resurrection maximum", "Start Over"}
+		h.figurepage.Icaptions = []string{"Click Below to Begin", "The cleric at the bar has a policy of only resurrecting the same person 12 times. No more no less. People in this world have a weird fixation on the number twelve.", "Start Over"}
 		h.figurepage.Ilinks = []string{"", "", "/"}
 
 		for _, val := range figurePages {
