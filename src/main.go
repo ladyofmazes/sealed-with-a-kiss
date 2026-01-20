@@ -18,6 +18,12 @@ type figure1 struct {
 func (h *figure1) OnMount(ctx app.Context) {
 	h.figurepage = lbook.NewFigurePage()
 	h.figurepage.Page("sealed-with-a-kiss-drinks")
+	var figurePages []string = []string{"sealed-with-a-kiss-grass",
+		"sealed-with-a-kiss-room",
+		"sealed-with-a-kiss-door",
+		"sealed-with-a-kiss-kiss",
+		"sealed-with-a-kiss-drinks",
+		"sealed-with-a-kiss-bakery"}
 
 	h.figurepage.Icaptions = []string{"Click Below to Begin",
 		"It is a beautiful day",
@@ -25,7 +31,18 @@ func (h *figure1) OnMount(ctx app.Context) {
 		"To your right is a bakery",
 		"Or you could go home"}
 	h.figurepage.Ilinks = []string{"", "", "/sealed-with-a-kiss-drinks", "/sealed-with-a-kiss-bakery", "/sealed-with-a-kiss-room"}
-	// Load the stored value
+
+	var kissVisits int
+	ctx.SessionStorage().Get("sealed-with-a-kiss-kiss"+"Visits", &kissVisits)
+	if kissVisits > 11 {
+
+		for _, val := range figurePages {
+			ctx.Dispatch(func(ctx app.Context) {
+				ctx.SessionStorage().Set(val, 0)
+				ctx.SessionStorage().Set(val+"Visits", 0)
+			})
+		}
+	}
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
 			var value int
@@ -346,7 +363,7 @@ func (h *figure6) OnMount(ctx app.Context) {
 		"As she is speaking the apartment is also shifting, turning from traditional hardwood to cold stone",
 		"Embrace and marry the princess",
 		"Refuse to marry the princess"}
-	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "/", "/"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "/sealed-with-a-kiss-good-end", "/"}
 	// Load the stored value
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
@@ -380,6 +397,54 @@ func (h *figure6) Render() app.UI {
 		).Caption(h.figurepage.Icaptions...).Audio("/web/CheerfulSunshine.wav").Links(h.figurepage.Ilinks...)
 }
 
+type figure7 struct {
+	app.Compo
+	figurepage *lbook.FigurePage
+}
+
+func (h *figure7) OnMount(ctx app.Context) {
+	h.figurepage = lbook.NewFigurePage()
+	h.figurepage.Page("sealed-with-a-kiss-kiss")
+
+	h.figurepage.Icaptions = []string{"Click Here to Begin",
+		"You feel yourself changing. You grow a frighteningly long beard. Your shoulders grow broader and you can tell if you looked you would have a six pack.",
+		"\"What is happening?\" You ask.",
+		"\"A princess needs a knight.\" She says, standing on her tiptoes to kiss your now significantly taller frame. \"And of course there is the matter of the dragon.\"",
+		"\"The dragon?\" you ask.",
+		"In the distance you hear a horrifying roar. Also you suspect there are no cookies in this place.",
+		"Restart?"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "/"}
+	// Load the stored value
+	for i, val := range h.figurepage.Ipage {
+		ctx.Dispatch(func(ctx app.Context) {
+			var value int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i], &value)
+
+			h.figurepage.IpageScore[val] = value
+
+			var visits int
+			ctx.SessionStorage().Get(h.figurepage.Ipage[i]+"Visits", &visits)
+
+			h.figurepage.IpageVisits[val] = visits
+		})
+	}
+}
+
+func (h *figure7) Render() app.UI {
+	if h.figurepage == nil {
+		h.figurepage = lbook.NewFigurePage()
+	}
+	if len(h.figurepage.Icaptions) == 0 {
+		h.figurepage.Icaptions = []string{""}
+	}
+	if len(h.figurepage.Ilinks) == 0 {
+		h.figurepage.Ilinks = []string{""}
+	}
+	return h.figurepage.
+		Name("sealed-with-a-kiss-good-end").
+		Caption(h.figurepage.Icaptions...).Links(h.figurepage.Ilinks...)
+}
+
 func main() {
 	app.Route("/", func() app.Composer { return &figure1{} })
 	app.Route("/sealed-with-a-kiss-drinks", func() app.Composer { return &figure2{} })
@@ -387,6 +452,7 @@ func main() {
 	app.Route("/sealed-with-a-kiss-room", func() app.Composer { return &figure4{} })
 	app.Route("/sealed-with-a-kiss-door", func() app.Composer { return &figure5{} })
 	app.Route("/sealed-with-a-kiss-kiss", func() app.Composer { return &figure6{} })
+	app.Route("/sealed-with-a-kiss-good-end", func() app.Composer { return &figure7{} })
 
 	app.RunWhenOnBrowser()
 
