@@ -155,6 +155,28 @@ func (h *figure3) OnMount(ctx app.Context) {
 		"Tell her to go away"}
 	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "/sealed-with-a-kiss-door", "/sealed-with-a-kiss-room"}
 
+	var kissVisits int
+	ctx.SessionStorage().Get("sealed-with-a-kiss-room"+"Visits", &kissVisits)
+	var kissVisits1 int
+	ctx.SessionStorage().Get("sealed-with-a-kiss-door"+"Visits", &kissVisits1)
+
+	var newCaption []string
+	var newLinks []string
+	if kissVisits > 0 {
+		newCaption = []string{"You really don't want to go home alone again but you really want to eat all these cookies", "Give her a cookie", "Tell her to go away"}
+		newLinks = []string{"", "/sealed-with-a-kiss-door", "/sealed-with-a-kiss-room"}
+	}
+	if kissVisits1 > 0 {
+		var addCaption []string = []string{"You really feel like this dog is just scamming you for your cookies every day. And she seems weirdly into the kissing as well."}
+		var addLink []string = []string{""}
+		newCaption = append(addCaption, newCaption...)
+		newLinks = append(addLink, newLinks...)
+	}
+	if kissVisits > 0 || kissVisits1 > 0 {
+		h.figurepage.Icaptions = append(h.figurepage.Icaptions[0:6], newCaption...)
+		h.figurepage.Ilinks = append(h.figurepage.Ilinks[0:6], newLinks...)
+	}
+
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
 			var value int
