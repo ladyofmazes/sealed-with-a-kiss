@@ -222,7 +222,16 @@ func (h *figure4) OnMount(ctx app.Context) {
 		"This is your house. Somehow you ended up back here again. Alone.",
 		"Leave"}
 	h.figurepage.Ilinks = []string{"", "", "/"}
-	// Load the stored value
+
+	var kissVisits int
+	ctx.SessionStorage().Get("sealed-with-a-kiss-bakery"+"Visits", &kissVisits)
+	if kissVisits > 0 {
+		var newCaption []string = []string{"Click Below to Begin", "This is your house. Somehow you ended up back here again. Alone.", "You kind of wish you had given that dog a cookie", "Leave"}
+		var newLinks []string = []string{"", "", "/sealed-with-a-kiss-bakery", "/"}
+
+		h.figurepage.Icaptions = newCaption
+		h.figurepage.Ilinks = newLinks
+	}
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
 			var value int
