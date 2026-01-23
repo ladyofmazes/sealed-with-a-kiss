@@ -443,7 +443,7 @@ func (h *figure7) Render() app.UI {
 		h.figurepage.Ilinks = []string{""}
 	}
 	return h.figurepage.
-		Name("sealed-with-a-kiss-good-end").
+		Name("sealed-with-a-kiss-good-end").Audio("/web/Dragon.wav").Figure("/web/GoodEnd.png").
 		Caption(h.figurepage.Icaptions...).Links(h.figurepage.Ilinks...)
 }
 
