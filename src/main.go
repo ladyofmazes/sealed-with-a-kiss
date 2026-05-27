@@ -82,7 +82,7 @@ func (h *figure1) Render() app.UI {
 		Page("sealed-with-a-kiss-drinks").
 		Figure(
 			"/web/20251224_144535.png",
-		).Caption(h.figurepage.Icaptions...).Audio("/web/BriskWalk.wav").Links(h.figurepage.Ilinks...)
+		).Caption(h.figurepage.Icaptions...).Audio("/web/BriskWalk.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure2 struct {
@@ -151,7 +151,7 @@ func (h *figure2) Render() app.UI {
 		Name("sealed-with-a-kiss-drinks").
 		Figure(
 			"/web/20251129_173150.png",
-		).Caption(h.figurepage.Icaptions...).Audio("/web/Forsaken.wav").Links(h.figurepage.Ilinks...)
+		).Caption(h.figurepage.Icaptions...).Audio("/web/Forsaken.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure3 struct {
@@ -225,7 +225,7 @@ func (h *figure3) Render() app.UI {
 		Name("sealed-with-a-kiss-bakery").
 		Figure(
 			"/web/20251208_121710.png",
-		).Caption(h.figurepage.Icaptions...).Audio("/web/ASongForRoss.wav").Links(h.figurepage.Ilinks...)
+		).Caption(h.figurepage.Icaptions...).Audio("/web/ASongForRoss.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure4 struct {
@@ -280,7 +280,7 @@ func (h *figure4) Render() app.UI {
 		Name("sealed-with-a-kiss-room").
 		Figure(
 			"/web/20251201_174639.png",
-		).Caption(h.figurepage.Icaptions...).Audio("/web/QuietChat.wav").Links(h.figurepage.Ilinks...)
+		).Caption(h.figurepage.Icaptions...).Audio("/web/QuietChat.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure5 struct {
@@ -344,7 +344,7 @@ func (h *figure5) Render() app.UI {
 		Name("sealed-with-a-kiss-door").
 		Figure(
 			"/web/20251230_171946.png",
-		).Caption(h.figurepage.Icaptions...).Audio("/web/Trepidation.wav").Links(h.figurepage.Ilinks...)
+		).Caption(h.figurepage.Icaptions...).Audio("/web/Trepidation.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure6 struct {
@@ -396,7 +396,7 @@ func (h *figure6) Render() app.UI {
 		Name("sealed-with-a-kiss-kiss").
 		Figure(
 			"/web/20260104_155132.png",
-		).Caption(h.figurepage.Icaptions...).Audio("/web/CheerfulSunshine.wav").Links(h.figurepage.Ilinks...)
+		).Caption(h.figurepage.Icaptions...).Audio("/web/CheerfulSunshine.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure7 struct {
@@ -443,7 +443,7 @@ func (h *figure7) Render() app.UI {
 		h.figurepage.Ilinks = []string{""}
 	}
 	return h.figurepage.
-		Name("sealed-with-a-kiss-good-end").Audio("/web/Dragon.wav").Figure("/web/GoodEnd.png").
+		Name("sealed-with-a-kiss-good-end").Audio("/web/Dragon.mp3").Figure("/web/GoodEnd.png").
 		Caption(h.figurepage.Icaptions...).Links(h.figurepage.Ilinks...)
 }
 
