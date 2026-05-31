@@ -81,7 +81,7 @@ func (h *figure1) Render() app.UI {
 		Name("sealed-with-a-kiss-grass").
 		Page("sealed-with-a-kiss-drinks").
 		Figure(
-			"/web/20251224_144535.webp",
+			"/web/20251224_144535.png",
 		).Caption(h.figurepage.Icaptions...).Audio("/web/BriskWalk.mp3").Links(h.figurepage.Ilinks...)
 }
 
@@ -150,7 +150,7 @@ func (h *figure2) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-drinks").
 		Figure(
-			"/web/20251129_173150.webp",
+			"/web/20251129_173150.png",
 		).Caption(h.figurepage.Icaptions...).Audio("/web/Forsaken.mp3").Links(h.figurepage.Ilinks...)
 }
 
@@ -224,7 +224,7 @@ func (h *figure3) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-bakery").
 		Figure(
-			"/web/20251208_121710.webp",
+			"/web/20251208_121710.png",
 		).Caption(h.figurepage.Icaptions...).Audio("/web/ASongForRoss.mp3").Links(h.figurepage.Ilinks...)
 }
 
@@ -279,7 +279,7 @@ func (h *figure4) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-room").
 		Figure(
-			"/web/20251201_174639.webp",
+			"/web/20251201_174639.png",
 		).Caption(h.figurepage.Icaptions...).Audio("/web/QuietChat.mp3").Links(h.figurepage.Ilinks...)
 }
 
@@ -343,7 +343,7 @@ func (h *figure5) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-door").
 		Figure(
-			"/web/20251230_171946.webp",
+			"/web/20251230_171946.png",
 		).Caption(h.figurepage.Icaptions...).Audio("/web/Trepidation.mp3").Links(h.figurepage.Ilinks...)
 }
 
@@ -395,7 +395,7 @@ func (h *figure6) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-kiss").
 		Figure(
-			"/web/20260104_155132.webp",
+			"/web/20260104_155132.png",
 		).Caption(h.figurepage.Icaptions...).Audio("/web/CheerfulSunshine.mp3").Links(h.figurepage.Ilinks...)
 }
 
@@ -443,7 +443,7 @@ func (h *figure7) Render() app.UI {
 		h.figurepage.Ilinks = []string{""}
 	}
 	return h.figurepage.
-		Name("sealed-with-a-kiss-good-end").Audio("/web/Dragon.mp3").Figure("/web/GoodEnd.webp").
+		Name("sealed-with-a-kiss-good-end").Audio("/web/Dragon.mp3").Figure("/web/GoodEnd.png").
 		Caption(h.figurepage.Icaptions...).Links(h.figurepage.Ilinks...)
 }
 
