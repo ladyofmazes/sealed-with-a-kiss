@@ -1,5 +1,8 @@
-/*.wav
+# Match all .wav files in any directory or subdirectory
+**.wav
   Content-Type: audio/wav
 
-/*.webp
+# Match all .webp files in any directory or subdirectory
+**.webp
   Content-Type: image/webp
+
