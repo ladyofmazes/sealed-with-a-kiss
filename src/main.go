@@ -30,7 +30,7 @@ func (h *figure1) OnMount(ctx app.Context) {
 		"To your left is your local pub",
 		"To your right is a bakery",
 		"Or you could go home"}
-	h.figurepage.Ilinks = []string{"", "", "/sealed-with-a-kiss-drinks", "/sealed-with-a-kiss-bakery", "/sealed-with-a-kiss-room"}
+	h.figurepage.Ilinks = []string{"", "", "#sealed-with-a-kiss-drinks", "#sealed-with-a-kiss-bakery", "#sealed-with-a-kiss-room"}
 
 	var kissVisits int
 	ctx.SessionStorage().Get("sealed-with-a-kiss-kiss"+"Visits", &kissVisits)
@@ -65,17 +65,12 @@ func (h *figure1) OnMount(ctx app.Context) {
 			}
 		})
 	}
+	ctx.Dispatch(func(ctx app.Context) {}) // repaint once figurepage is populated
 }
 
 func (h *figure1) Render() app.UI {
 	if h.figurepage == nil {
-		h.figurepage = lbook.NewFigurePage()
-	}
-	if len(h.figurepage.Icaptions) == 0 {
-		h.figurepage.Icaptions = []string{""}
-	}
-	if len(h.figurepage.Ilinks) == 0 {
-		h.figurepage.Ilinks = []string{""}
+		return app.Div() // OnMount populates it, then the dispatch repaints
 	}
 	return h.figurepage.
 		Name("sealed-with-a-kiss-grass").
@@ -105,13 +100,13 @@ func (h *figure2) OnMount(ctx app.Context) {
 		"After several drinks you don't feel well",
 		"Somehow you forgot you are allergic to alcohol",
 		"You died (but luckily were resurrected by a cleric because this is a magical world)"}
-	h.figurepage.Ilinks = []string{"", "", "", "", "/"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "#"}
 
 	var kissVisits int
 	ctx.SessionStorage().Get("sealed-with-a-kiss-drinks"+"Visits", &kissVisits)
 	if kissVisits > 11 {
 		h.figurepage.Icaptions = []string{"Click Below to Begin", "The cleric at the bar has a policy of only resurrecting the same person 12 times. No more no less. People in this world have a weird fixation on the number twelve.", "Start Over"}
-		h.figurepage.Ilinks = []string{"", "", "/"}
+		h.figurepage.Ilinks = []string{"", "", "#"}
 
 		for _, val := range figurePages {
 			ctx.Dispatch(func(ctx app.Context) {
@@ -133,18 +128,12 @@ func (h *figure2) OnMount(ctx app.Context) {
 			h.figurepage.IpageVisits[strings.TrimSpace(val)] = visits
 		})
 	}
-
+	ctx.Dispatch(func(ctx app.Context) {}) // repaint once figurepage is populated
 }
 
 func (h *figure2) Render() app.UI {
 	if h.figurepage == nil {
-		h.figurepage = lbook.NewFigurePage()
-	}
-	if len(h.figurepage.Icaptions) == 0 {
-		h.figurepage.Icaptions = []string{""}
-	}
-	if len(h.figurepage.Ilinks) == 0 {
-		h.figurepage.Ilinks = []string{""}
+		return app.Div() // OnMount populates it, then the dispatch repaints
 	}
 
 	return h.figurepage.
@@ -172,7 +161,7 @@ func (h *figure3) OnMount(ctx app.Context) {
 		"She doesn't say anything, just sitting there looking cute.",
 		"Give her a cookie",
 		"Tell her to go away"}
-	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "/sealed-with-a-kiss-door", "/sealed-with-a-kiss-room"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "#sealed-with-a-kiss-door", "#sealed-with-a-kiss-room"}
 
 	var kissVisits int
 	ctx.SessionStorage().Get("sealed-with-a-kiss-room"+"Visits", &kissVisits)
@@ -183,7 +172,7 @@ func (h *figure3) OnMount(ctx app.Context) {
 	var newLinks []string
 	if kissVisits > 0 {
 		newCaption = []string{"You really don't want to go home alone again but you really want to eat all these cookies", "Give her a cookie", "Tell her to go away"}
-		newLinks = []string{"", "/sealed-with-a-kiss-door", "/sealed-with-a-kiss-room"}
+		newLinks = []string{"", "#sealed-with-a-kiss-door", "#sealed-with-a-kiss-room"}
 	}
 	if kissVisits1 > 0 {
 		var addCaption []string = []string{"You really feel like this dog is just scamming you for your cookies every day. And she seems weirdly into the kissing as well."}
@@ -209,17 +198,12 @@ func (h *figure3) OnMount(ctx app.Context) {
 			h.figurepage.IpageVisits[val] = visits
 		})
 	}
+	ctx.Dispatch(func(ctx app.Context) {}) // repaint once figurepage is populated
 }
 
 func (h *figure3) Render() app.UI {
 	if h.figurepage == nil {
-		h.figurepage = lbook.NewFigurePage()
-	}
-	if len(h.figurepage.Icaptions) == 0 {
-		h.figurepage.Icaptions = []string{""}
-	}
-	if len(h.figurepage.Ilinks) == 0 {
-		h.figurepage.Ilinks = []string{""}
+		return app.Div() // OnMount populates it, then the dispatch repaints
 	}
 	return h.figurepage.
 		Name("sealed-with-a-kiss-bakery").
@@ -240,13 +224,13 @@ func (h *figure4) OnMount(ctx app.Context) {
 	h.figurepage.Icaptions = []string{"Click Below to Begin",
 		"This is your house. Somehow you ended up back here again. Alone.",
 		"Leave"}
-	h.figurepage.Ilinks = []string{"", "", "/"}
+	h.figurepage.Ilinks = []string{"", "", "#"}
 
 	var kissVisits int
 	ctx.SessionStorage().Get("sealed-with-a-kiss-bakery"+"Visits", &kissVisits)
 	if kissVisits > 0 {
 		var newCaption []string = []string{"Click Below to Begin", "This is your house. Somehow you ended up back here again. Alone.", "You kind of wish you had given that dog a cookie", "Leave"}
-		var newLinks []string = []string{"", "", "/sealed-with-a-kiss-bakery", "/"}
+		var newLinks []string = []string{"", "", "#sealed-with-a-kiss-bakery", "#"}
 
 		h.figurepage.Icaptions = newCaption
 		h.figurepage.Ilinks = newLinks
@@ -264,17 +248,12 @@ func (h *figure4) OnMount(ctx app.Context) {
 			h.figurepage.IpageVisits[val] = visits
 		})
 	}
+	ctx.Dispatch(func(ctx app.Context) {}) // repaint once figurepage is populated
 }
 
 func (h *figure4) Render() app.UI {
 	if h.figurepage == nil {
-		h.figurepage = lbook.NewFigurePage()
-	}
-	if len(h.figurepage.Icaptions) == 0 {
-		h.figurepage.Icaptions = []string{""}
-	}
-	if len(h.figurepage.Ilinks) == 0 {
-		h.figurepage.Ilinks = []string{""}
+		return app.Div() // OnMount populates it, then the dispatch repaints
 	}
 	return h.figurepage.
 		Name("sealed-with-a-kiss-room").
@@ -308,12 +287,12 @@ func (h *figure5) OnMount(ctx app.Context) {
 		"\"Just kiss me!\" She says. ",
 		"Kiss the dog",
 		"Refuse to kiss the dog"}
-	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "", "/", "/sealed-with-a-kiss-room"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "", "#", "#sealed-with-a-kiss-room"}
 
 	var kissVisits int
 	ctx.SessionStorage().Get("sealed-with-a-kiss-door"+"Visits", &kissVisits)
 	if kissVisits > 11 {
-		h.figurepage.Ilinks[8] = "/sealed-with-a-kiss-kiss"
+		h.figurepage.Ilinks[8] = "#sealed-with-a-kiss-kiss"
 	}
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
@@ -328,17 +307,12 @@ func (h *figure5) OnMount(ctx app.Context) {
 			h.figurepage.IpageVisits[val] = visits
 		})
 	}
+	ctx.Dispatch(func(ctx app.Context) {}) // repaint once figurepage is populated
 }
 
 func (h *figure5) Render() app.UI {
 	if h.figurepage == nil {
-		h.figurepage = lbook.NewFigurePage()
-	}
-	if len(h.figurepage.Icaptions) == 0 {
-		h.figurepage.Icaptions = []string{""}
-	}
-	if len(h.figurepage.Ilinks) == 0 {
-		h.figurepage.Ilinks = []string{""}
+		return app.Div() // OnMount populates it, then the dispatch repaints
 	}
 	return h.figurepage.
 		Name("sealed-with-a-kiss-door").
@@ -365,7 +339,7 @@ func (h *figure6) OnMount(ctx app.Context) {
 		"As she is speaking the apartment is also shifting, turning from traditional hardwood to cold stone",
 		"Embrace and marry the princess",
 		"Refuse to marry the princess"}
-	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "/sealed-with-a-kiss-good-end", "/"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "", "#sealed-with-a-kiss-good-end", "#"}
 	// Load the stored value
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
@@ -380,17 +354,12 @@ func (h *figure6) OnMount(ctx app.Context) {
 			h.figurepage.IpageVisits[val] = visits
 		})
 	}
+	ctx.Dispatch(func(ctx app.Context) {}) // repaint once figurepage is populated
 }
 
 func (h *figure6) Render() app.UI {
 	if h.figurepage == nil {
-		h.figurepage = lbook.NewFigurePage()
-	}
-	if len(h.figurepage.Icaptions) == 0 {
-		h.figurepage.Icaptions = []string{""}
-	}
-	if len(h.figurepage.Ilinks) == 0 {
-		h.figurepage.Ilinks = []string{""}
+		return app.Div() // OnMount populates it, then the dispatch repaints
 	}
 	return h.figurepage.
 		Name("sealed-with-a-kiss-kiss").
@@ -415,7 +384,7 @@ func (h *figure7) OnMount(ctx app.Context) {
 		"\"The dragon?\" you ask.",
 		"In the distance you hear a horrifying roar. Also you suspect there are no cookies in this place.",
 		"Restart?"}
-	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "/"}
+	h.figurepage.Ilinks = []string{"", "", "", "", "", "", "#"}
 	// Load the stored value
 	for i, val := range h.figurepage.Ipage {
 		ctx.Dispatch(func(ctx app.Context) {
@@ -430,31 +399,87 @@ func (h *figure7) OnMount(ctx app.Context) {
 			h.figurepage.IpageVisits[val] = visits
 		})
 	}
+	ctx.Dispatch(func(ctx app.Context) {}) // repaint once figurepage is populated
 }
 
 func (h *figure7) Render() app.UI {
 	if h.figurepage == nil {
-		h.figurepage = lbook.NewFigurePage()
-	}
-	if len(h.figurepage.Icaptions) == 0 {
-		h.figurepage.Icaptions = []string{""}
-	}
-	if len(h.figurepage.Ilinks) == 0 {
-		h.figurepage.Ilinks = []string{""}
+		return app.Div() // OnMount populates it, then the dispatch repaints
 	}
 	return h.figurepage.
 		Name("sealed-with-a-kiss-good-end").Audio("/web/Dragon.mp3").Figure("/web/GoodEnd.webp").
 		Caption(h.figurepage.Icaptions...).Links(h.figurepage.Ilinks...)
 }
 
+type root struct {
+	app.Compo
+	current string
+}
+
+func (r *root) OnMount(ctx app.Context) {
+	r.syncHash()
+
+	// React to fragment changes: in-app clicks, back/forward, deep links.
+	app.Window().Call("addEventListener", "hashchange",
+		app.FuncOf(func(this app.Value, args []app.Value) any {
+			ctx.Dispatch(func(ctx app.Context) {
+				r.syncHash()
+				app.Log("nav ->", r.current) // diagnostic; delete later
+			})
+			return nil
+		}),
+	)
+
+	// Stop go-app from grabbing our "#" links for path routing.
+	// Capture phase + stopPropagation runs before go-app's own click
+	// handler; we just set the hash, which fires the listener above.
+	app.Window().Get("document").Call("addEventListener", "click",
+		app.FuncOf(func(this app.Value, args []app.Value) any {
+			e := args[0]
+			a := e.Get("target").Call("closest", "a")
+			if a.IsNull() {
+				return nil
+			}
+			frag := a.Get("hash").String()                 // "#…-drinks" for page links
+			raw := a.Call("getAttribute", "href").String() // "#" for start-over / restart
+			if frag != "" || raw == "#" {
+				e.Call("preventDefault")
+				e.Call("stopPropagation")
+				app.Window().Get("location").Set("hash", strings.TrimPrefix(frag, "#"))
+			}
+			return nil
+		}),
+		true,
+	)
+	ctx.Dispatch(func(ctx app.Context) {}) // repaint once figurepage is populated
+}
+
+func (r *root) syncHash() {
+	r.current = strings.TrimPrefix(
+		app.Window().Get("location").Get("hash").String(), "#")
+}
+
+func (r *root) Render() app.UI {
+	switch r.current {
+	case "sealed-with-a-kiss-drinks":
+		return &figure2{}
+	case "sealed-with-a-kiss-bakery":
+		return &figure3{}
+	case "sealed-with-a-kiss-room":
+		return &figure4{}
+	case "sealed-with-a-kiss-door":
+		return &figure5{}
+	case "sealed-with-a-kiss-kiss":
+		return &figure6{}
+	case "sealed-with-a-kiss-good-end":
+		return &figure7{}
+	default:
+		return &figure1{}
+	}
+}
+
 func main() {
-	app.Route("/", func() app.Composer { return &figure1{} })
-	app.Route("/sealed-with-a-kiss-drinks", func() app.Composer { return &figure2{} })
-	app.Route("/sealed-with-a-kiss-bakery", func() app.Composer { return &figure3{} })
-	app.Route("/sealed-with-a-kiss-room", func() app.Composer { return &figure4{} })
-	app.Route("/sealed-with-a-kiss-door", func() app.Composer { return &figure5{} })
-	app.Route("/sealed-with-a-kiss-kiss", func() app.Composer { return &figure6{} })
-	app.Route("/sealed-with-a-kiss-good-end", func() app.Composer { return &figure7{} })
+	app.Route("/", func() app.Composer { return &root{} })
 
 	app.RunWhenOnBrowser()
 
