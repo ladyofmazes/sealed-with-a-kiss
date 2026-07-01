@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-        "path"
 
 	lbook "github.com/ladyofmazes/linkbook/lib"
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
@@ -14,11 +13,6 @@ import (
 type figure1 struct {
 	app.Compo
 	figurepage *lbook.FigurePage
-}
-
-func assetURL(name string) string {
-    u := app.Window().URL() // e.g. https://html-classic.itch.zone/html/12345/index.html
-    return u.Scheme + "://" + u.Host + path.Join(path.Dir(u.Path), name)
 }
 
 func (h *figure1) OnMount(ctx app.Context) {
@@ -82,8 +76,8 @@ func (h *figure1) Render() app.UI {
 		Name("sealed-with-a-kiss-grass").
 		Page("sealed-with-a-kiss-drinks").
 		Figure(
-			assetURL("web/20251224_144535.webp"),
-		).Caption(h.figurepage.Icaptions...).Audio(assetURL("web/BriskWalk.mp3")).Links(h.figurepage.Ilinks...)
+			"web/20251224_144535.webp",
+		).Caption(h.figurepage.Icaptions...).Audio("web/BriskWalk.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure2 struct {
@@ -145,8 +139,8 @@ func (h *figure2) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-drinks").
 		Figure(
-			assetURL("web/20251129_173150.webp"),
-		).Caption(h.figurepage.Icaptions...).Audio(assetURL("web/Forsaken.mp3")).Links(h.figurepage.Ilinks...)
+			"web/20251129_173150.webp",
+		).Caption(h.figurepage.Icaptions...).Audio("web/Forsaken.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure3 struct {
@@ -214,8 +208,8 @@ func (h *figure3) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-bakery").
 		Figure(
-			assetURL("web/20251208_121710.webp"),
-		).Caption(h.figurepage.Icaptions...).Audio(assetURL("web/ASongForRoss.mp3")).Links(h.figurepage.Ilinks...)
+			"web/20251208_121710.webp",
+		).Caption(h.figurepage.Icaptions...).Audio("web/ASongForRoss.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure4 struct {
@@ -264,8 +258,8 @@ func (h *figure4) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-room").
 		Figure(
-			assetURL("web/20251201_174639.webp"),
-		).Caption(h.figurepage.Icaptions...).Audio(assetURL("web/QuietChat.mp3")).Links(h.figurepage.Ilinks...)
+			"web/20251201_174639.webp",
+		).Caption(h.figurepage.Icaptions...).Audio("web/QuietChat.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure5 struct {
@@ -323,8 +317,8 @@ func (h *figure5) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-door").
 		Figure(
-			assetURL("web/20251230_171946.webp"),
-		).Caption(h.figurepage.Icaptions...).Audio(assetURL("web/Trepidation.mp3")).Links(h.figurepage.Ilinks...)
+			"web/20251230_171946.webp",
+		).Caption(h.figurepage.Icaptions...).Audio("web/Trepidation.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure6 struct {
@@ -370,8 +364,8 @@ func (h *figure6) Render() app.UI {
 	return h.figurepage.
 		Name("sealed-with-a-kiss-kiss").
 		Figure(
-			assetURL("web/20260104_155132.webp"),
-		).Caption(h.figurepage.Icaptions...).Audio(assetURL("web/CheerfulSunshine.mp3")).Links(h.figurepage.Ilinks...)
+			"web/20260104_155132.webp",
+		).Caption(h.figurepage.Icaptions...).Audio("web/CheerfulSunshine.mp3").Links(h.figurepage.Ilinks...)
 }
 
 type figure7 struct {
@@ -413,7 +407,7 @@ func (h *figure7) Render() app.UI {
 		return app.Div() // OnMount populates it, then the dispatch repaints
 	}
 	return h.figurepage.
-		Name("sealed-with-a-kiss-good-end").Audio(assetURL("web/Dragon.mp3")).Figure(assetURL("web/GoodEnd.webp")).
+		Name("sealed-with-a-kiss-good-end").Audio("web/Dragon.mp3").Figure("web/GoodEnd.webp").
 		Caption(h.figurepage.Icaptions...).Links(h.figurepage.Ilinks...)
 }
 
@@ -485,7 +479,7 @@ func (r *root) Render() app.UI {
 }
 
 func main() {
-        app.RouteWithRegexp("^.*$", func() app.Composer { return &root{} })
+	app.RouteWithRegexp("^.*$", func() app.Composer { return &root{} })
 
 	app.RunWhenOnBrowser()
 
