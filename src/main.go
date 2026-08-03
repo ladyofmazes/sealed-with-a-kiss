@@ -4,6 +4,8 @@ import (
 	_ "embed"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"strings"
 
 	lbook "github.com/ladyofmazes/linkbook/lib"
@@ -487,7 +489,14 @@ func main() {
 		select {}
 	}
 
-	http.Handle("/", &app.Handler{
+	// go-app embeds standard Go's wasm_exec.js; TinyGo WASM needs TinyGo's glue.
+	http.HandleFunc("/wasm_exec.js", serveTinyGoWasmExec)
+	// Deploy ships only web/app.wasm.br; serve it at the URLs go-app fetches.
+	http.HandleFunc("/web/app.wasm", serveAppWasm)
+	http.HandleFunc("/web/app.wasm.br", serveAppWasm)
+	http.HandleFunc("/app.wasm", serveAppWasm)
+
+	h := &app.Handler{
 		Name:        "That Time I Gave a Dog a Cookie and Then I Did It 14 More Times and Was Transported to Another World",
 		Description: "That time I gave a dog a cookie and then I did it 14 more times and was transported to another world",
 		Resources:   app.LocalDir("."),
@@ -496,9 +505,61 @@ func main() {
 			"web/css/prism.css",
 			"web/css/docs.css",
 		},
-	})
+	}
+	if size, err := os.ReadFile("web/app.wasm.size"); err == nil {
+		h.WasmContentLength = strings.TrimSpace(string(size))
+	} else if info, err := os.Stat("web/app.wasm"); err == nil {
+		h.WasmContentLength = strconv.FormatInt(info.Size(), 10)
+	}
+
+	http.Handle("/", h)
 
 	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func serveTinyGoWasmExec(w http.ResponseWriter, r *http.Request) {
+	// Read fully into memory so Content-Length always matches the body
+	// (avoids truncated ServeFile responses that leave `Go` undefined).
+	data, err := os.ReadFile("wasm_exec.js")
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "application/javascript")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
+	_, _ = w.Write(data)
+}
+
+func serveAppWasm(w http.ResponseWriter, r *http.Request) {
+	// Prefer brotli-only deploy artifact; fall back to uncompressed for local builds.
+	path := "web/app.wasm.br"
+	encoding := "br"
+	if _, err := os.Stat(path); err != nil {
+		path = "web/app.wasm"
+		encoding = ""
+	}
+
+	f, err := os.Open(path)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	defer f.Close()
+
+	stat, err := f.Stat()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/wasm")
+	w.Header().Set("Cache-Control", "no-cache")
+	if encoding != "" {
+		w.Header().Set("Content-Encoding", encoding)
+	}
+	// Name as .wasm so mime stays application/wasm even when reading .br bytes.
+	http.ServeContent(w, r, "app.wasm", stat.ModTime(), f)
 }

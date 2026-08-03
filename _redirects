@@ -1,0 +1,3 @@
+# Serve precompressed WASM at the URL go-app fetches.
+/web/app.wasm /web/app.wasm.br 200
+/app.wasm /web/app.wasm.br 200

@@ -6,3 +6,16 @@
 **.webp
   Content-Type: image/webp
 
+# Brotli-only WASM (hackrooms-style). go-app still requests /web/app.wasm;
+# _redirects rewrites that URL to the .br file, so both paths need these headers.
+/web/app.wasm
+  Content-Type: application/wasm
+  Content-Encoding: br
+
+/web/app.wasm.br
+  Content-Type: application/wasm
+  Content-Encoding: br
+
+/app.wasm
+  Content-Type: application/wasm
+  Content-Encoding: br
